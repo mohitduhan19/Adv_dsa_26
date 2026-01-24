@@ -1,0 +1,15 @@
+class Solution {
+    public boolean isPossibe(int[] piles , int speed , int maxhr){
+        int currhr = 0;
+
+        for(int banana : piles){
+            currhr = currhr + banana/speed;
+            if(banana % speed != 0)currhr++;
+        }
+        if(currhr <= maxhr)return true;
+        return false;2256
+    }
+    public int minEatingSpeed(int[] piles, int h) {
+
+    }
+}

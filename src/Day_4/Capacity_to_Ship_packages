@@ -1,0 +1,45 @@
+  public boolean isPossible(int[] wt , int totaldays ,int maxload){
+        int currwt = 0 , currday = 1;
+
+        for(int i = 0;i < wt.length;i++){
+            if(currwt + wt[i] <= maxload){
+                currwt += wt[i];
+            }else{
+                currday++;
+                currwt = wt[i];
+            }
+        }
+
+        if(currday > totaldays)return false;
+        return true;
+    }
+    public int max(int[] arr){
+        int ans= 0;
+        for(int i = 0;i < arr.length;i++){
+            ans = Math.max(ans , arr[i]);
+        }
+        return ans;
+    }
+
+    public int sum(int[] arr){
+        int ans = 0;
+        for(int i = 0;i < arr.length;i++){
+            ans += arr[i];
+        }
+        return ans;
+    }
+    public int shipWithinDays(int[] weights, int days) {
+        int l = max(weights) , h = sum(weights);
+        int ans = h;
+
+        while(l <= h){
+            int mid = (l+h)/2;
+            if(isPossible(weights , days , mid) == true){
+                ans = mid;
+                h = mid -1;
+            }else{
+                l = mid +1;
+            }
+        }
+        return ans;
+    }

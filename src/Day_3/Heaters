@@ -1,0 +1,48 @@
+ class pair{
+        int js = -1;
+        int jg = -1;
+        pair(){};
+
+        pair(int js , int jg){
+            this.js = js;
+            this.jg = jg;
+        }
+    }
+    public pair binarySearch(int tar , int[] heaters){
+        int lo = 0 , hi = heaters.length-1;
+        pair p = new pair();
+
+        while(lo <= hi){
+            int mid = (lo + hi)/2;
+
+            if(heaters[mid] == tar){
+                p.js = heaters[mid];
+                p.jg = heaters[mid];
+                break;
+            }else if(heaters[mid] < tar){
+                p.js = heaters[mid];
+                lo = mid + 1;
+            }else{
+                p.jg = heaters[mid];
+                hi = mid -1;
+            }
+        }
+        return p;
+    }
+    public int findRadius(int[] houses, int[] heaters) {
+        Arrays.sort(heaters);
+        int ans = 0;
+        for(int i = 0;i < houses.length;i++){
+            int hp = houses[i];
+            pair p = binarySearch(hp , heaters);
+
+            int d1 = (p.js == -1) ? Integer.MAX_VALUE: Math.abs(hp - p.js);
+
+            int d2 = (p.jg == -1) ? Integer.MAX_VALUE: Math.abs(p.jg - hp);
+            int mind = Math.min(d1 , d2);
+
+            if(mind > ans)ans = mind;
+
+        }
+        return ans;
+    }

@@ -1,0 +1,23 @@
+  public boolean search(int[][] mat , int tar){
+        int n=mat.length , m = mat[0].length;
+        int l = 0 , r = n*m-1;
+
+        while(l <= r){
+            int midcell = (l + r)/2;
+
+            int ridx = midcell/m;
+            int cidx = midcell%m;
+
+            if(mat[ridx][cidx] == tar){
+                return true;
+            }else if(mat[ridx][cidx] < tar){
+                l = midcell + 1;
+            }else{
+                r = midcell -1;
+            }
+        }
+        return false;
+    }
+    public boolean searchMatrix(int[][] matrix, int target) {
+        return search(matrix , target);
+    }

@@ -1,0 +1,15 @@
+  public static void generate(int idx, int[] arr, List<Integer> curr, List<List<Integer>> ans) {
+        // Base case
+        if (idx == arr.length) {
+            ans.add(new ArrayList<>(curr));
+            return;
+        }
+
+        // Include
+        curr.add(arr[idx]);
+        generate(idx + 1, arr, curr, ans);
+
+        // Exclude (backtrack)
+        curr.remove(curr.size() - 1);
+        generate(idx + 1, arr, curr, ans);
+  }

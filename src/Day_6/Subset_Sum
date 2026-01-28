@@ -1,0 +1,20 @@
+  public void help(int idx , int sum , int[]arr , ArrayList<Integer> ans){
+        if(idx == arr.length){
+            ans.add(sum);
+            return;
+        }
+
+        //pick
+        help(idx+ 1 , sum + arr[idx] , arr , ans);
+
+        //not pick
+        help(idx +1 , sum , arr , ans);
+    }
+    public ArrayList<Integer> subsetSums(int[] arr) {
+        // code here
+        ArrayList<Integer>ans = new ArrayList<>();
+        help(0 , 0 , arr , ans);
+        Collections.sort(ans);
+        return ans;
+
+    }

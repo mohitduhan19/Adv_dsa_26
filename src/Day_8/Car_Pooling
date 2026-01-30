@@ -1,0 +1,22 @@
+ public boolean carPooling(int[][] trips, int capacity) {
+        int lastDrop = -1;
+
+        for(int[] trip : trips){
+            lastDrop = Math.max(lastDrop , trip[2]);
+        }
+
+        int[] highway = new int[lastDrop + 1];
+
+        for(int[] trip : trips){
+            highway[trip[1]] += trip[0];
+            highway[trip[2]] -= trip[0];
+        }
+
+        int pass = 0;
+        for(int i = 0;i < highway.length;i++){
+            pass += highway[i];
+            if(pass > capacity)return false;
+        }
+        return true;
+
+    }

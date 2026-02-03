@@ -1,0 +1,38 @@
+    public int help(int idx , int N ,int[]price){
+         if(idx == 0){
+             return N*price[0];
+         }
+
+         int notTake = help(idx -1 , N , price);
+         int take = Integer.MIN_VALUE;
+         int rodLength = idx + 1;
+         if(rodLength <= N){
+             take = price[idx] + help(idx -1 , N - rodLength , price);
+         }
+         return Math.max(notTake , take);
+     }
+ public int cutRod(int[] price) {
+        // code here
+        int n = price.length;
+       //  return help(n-1 , n , price);
+        int[][] dp =  new int[price.length][n+1];
+
+        for(int N= 0;N<=n;N++){
+            dp[0][N] = N*price[0];
+        }
+
+        for(int idx  = 1;idx < n;idx++){
+            for(int N = 0; N <= n;N++){
+        int notTake = dp[idx -1][N];
+        int take = Integer.MIN_VALUE;
+        int rodLength = idx + 1;
+        if(rodLength <= N){
+            take = price[idx] + dp[idx][N - rodLength];
+        }
+        dp[idx][N] =  Math.max(notTake , take);
+
+            }
+        }
+        return dp[price.length-1][price.length];
+    }
+}

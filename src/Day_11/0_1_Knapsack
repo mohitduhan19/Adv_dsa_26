@@ -1,0 +1,46 @@
+ static int help(int ind , int limit, int[] val  , int []wt , int[][]dp){
+        if(ind == 0){
+            if(wt[0] <= limit)return val[0];
+            return 0;
+        }
+        if(dp[ind][limit] != -1)return dp[ind][limit];
+
+        int notTake = help(ind -1 , limit , val , wt ,dp);
+        int take= Integer.MIN_VALUE;
+        if(wt[ind] <= limit){
+            take = val[ind] + help(ind -1 , limit - wt[ind] , val , wt , dp);
+        }
+        return dp[ind][limit] = Math.max(notTake , take);
+    }
+    static int knapsack(int W, int val[], int wt[]) {
+        int[][] dp = new int[wt.length][W+1];
+
+        for(int i = 0;i < wt.length;i++){
+            Arrays.fill(dp[i] , -1);
+        }
+        return help(wt.length-1 , W , val , wt , dp);
+
+    }
+
+
+    //         TABLUATION
+
+      static int knapsack(int limit, int val[], int wt[]) {
+            int[][] dp = new int[wt.length][limit+1];
+
+            for(int w = wt[0];w <= limit;w++)dp[0][w]= val[0];
+
+            for(int ind = 1;ind < wt.length;ind++){
+                for(int w = 0;w <= limit;w++){
+
+            int notTake = dp[ind -1][w];
+            int take= Integer.MIN_VALUE;
+            if(wt[ind] <= w){
+                take = val[ind] + dp[ind -1][w - wt[ind]];
+            }
+             dp[ind][w] = Math.max(notTake , take);
+
+                }
+            }
+            return dp[wt.length-1][limit];
+        }

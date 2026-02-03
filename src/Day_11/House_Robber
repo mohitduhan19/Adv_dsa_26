@@ -1,0 +1,25 @@
+  // public int fun(int[] nums , int idx ,int[]dp){
+    //     if(idx == 0)return nums[idx];
+    //     if(idx < 0)return 0;
+    //     if(dp[idx] != -1)return dp[idx];
+
+    //     int rob = nums[idx] + fun(nums , idx -2 , dp);
+    //     int notRob = fun(nums , idx -1 , dp);
+    //     return dp[idx] = Math.max(rob , notRob);
+    // }
+    public int rob(int[] nums) {
+        int[] dp = new int[nums.length+1];
+        // Arrays.fill(dp , -1);
+        // return  fun(nums , nums.length-1 , dp);
+        dp[0] = nums[0];
+        int neg = 0;
+
+        for(int i= 1;i < nums.length;i++){
+            int take = nums[i];
+            if(i > 1)take += dp[i-2];
+
+           int notTake = dp[i -1];
+           dp[i] = Math.max(take , notTake);
+        }
+        return dp[nums.length-1];
+    }

@@ -1,0 +1,25 @@
+    public int perfectSum(int[] nums, int k) {
+        int mod = 1000000007;
+        int[][]dp  = new int[nums.length][k +1];
+
+
+        if(nums[0] == 0)dp[0][0] = 2;
+        else dp[0][0] =1;
+
+        if(nums[0] != 0 && nums[0] <= k)dp[0][nums[0]] = 1;
+
+
+        for(int ind = 1;ind < nums.length;ind++){
+            for(int tar = 0;tar <= k;tar++){
+
+        int notPick = dp[ind -1][tar];
+        int pick= 0;
+
+        if(nums[ind] <= tar)pick =dp[ind -1][tar - nums[ind]];
+
+          dp[ind][tar] =( notPick + pick)%mod;
+
+            }
+        }
+        return dp[nums.length-1][k];
+    }

@@ -1,0 +1,58 @@
+class Solution {
+
+    public int help(int i, int j, int[][] nums, int[][] dp) {
+        if (j < 0 || j >= nums[0].length)
+            return Integer.MAX_VALUE / 2;
+
+        if (i == 0)
+            return nums[0][j];
+
+        if (dp[i][j] != -1)
+            return dp[i][j];
+
+        int up = help(i - 1, j, nums, dp) + nums[i][j];
+        int ld = help(i - 1, j - 1, nums, dp) + nums[i][j];
+        int rd = help(i - 1, j + 1, nums, dp) + nums[i][j];
+
+        return dp[i][j] = Math.min(up, Math.min(ld, rd));
+    }
+
+    public int minFallingPathSum(int[][] nums) {
+        int[][] dp = new int[nums.length][nums[0].length];
+
+        // for (int i = 0; i < nums.length; i++) {
+        //     Arrays.fill(dp[i], -1);
+        // }
+        // for (int j = 0; j < nums[0].length; j++) {
+        //     ans = Math.min(ans, help(nums.length - 1, j, nums, dp));
+        // }
+        // return ans;
+
+        for (int j = 0; j < nums[0].length;j++) {
+            dp[0][j] = nums[0][j];
+        }
+
+        for (int i = 1; i < nums.length; i++) {
+            for (int j = 0; j < nums[0].length; j++) {
+                int up = Integer.MAX_VALUE;
+                int ld = Integer.MAX_VALUE;
+                int rd = Integer.MAX_VALUE;
+
+                up = dp[i - 1][j] + nums[i][j];
+                if (j - 1 >= 0)
+                    ld = dp[i - 1][j - 1] + nums[i][j];
+                if (j + 1 < nums[0].length)
+                    rd = dp[i - 1][j + 1] + nums[i][j];
+
+                dp[i][j] = Math.min(up, Math.min(ld, rd));
+            }
+        }
+        int ans = Integer.MAX_VALUE;
+
+         for (int j = 0; j < nums[0].length; j++) {
+            ans = Math.min(ans, dp[nums.length - 1][j]);
+        }
+        return ans;
+
+    }
+}

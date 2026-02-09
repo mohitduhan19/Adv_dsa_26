@@ -1,0 +1,41 @@
+class CityPairs // Create user-defined class
+{
+    int north, south;
+    CityPairs(int north, int south) // Constructor
+    {
+        this.north = north;
+        this.south = south;
+    }
+}
+class MyCmp implements Comparator<CityPairs>
+{
+    public int compare(CityPairs cp1, CityPairs cp2)
+    {
+        if (cp1.north == cp2.north)
+            return cp1.south - cp2.south;
+        return cp1.north - cp2.north;
+    }
+}
+public class BuildingBridges {
+
+    public static int maxBridges(CityPairs[] pairs, int n)
+    {
+        int[] LIS = new int[n];
+        // By default single city has LIS = 1.
+        Arrays.fill(LIS, 1);
+
+        Arrays.sort(pairs, new MyCmp()); // Sorting->
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (pairs[i].south >= pairs[j].south)
+                    LIS[i] = Math.max(LIS[i], LIS[j] + 1);
+            }
+        }
+        int max = LIS[0];
+        for (int i = 1; i < n; i++) {
+            max = Math.max(max, LIS[i]);
+        }
+
+        return max;
+    }

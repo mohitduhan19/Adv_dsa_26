@@ -1,0 +1,17 @@
+    public int height(TreeNode root){
+        if(root == null)return 0;
+
+        return Math.max(height(root.left) , height(root.right)) + 1;
+    }
+    public int diameterOfBinaryTree(TreeNode root) {
+        if(root == null)return 0;
+
+        // max dist between two nodes on lhs
+        int ld = diameterOfBinaryTree(root.left);
+        //rhs
+        int rd = diameterOfBinaryTree(root.right);
+        int f = height(root.left) + height(root.right);
+
+        int dia = Math.max(f , Math.max(ld ,rd));
+        return dia;
+    }

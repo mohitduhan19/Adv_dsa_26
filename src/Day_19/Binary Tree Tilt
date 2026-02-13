@@ -1,0 +1,15 @@
+  int tilt = 0;
+    public int find(TreeNode node){
+        if(node == null)return 0;
+        int ls = find(node.left);
+        int rs = find(node.right);
+
+        int tiltNode = Math.abs(ls - rs);
+        tilt += tiltNode;
+        return ls + rs + node.val;
+    }
+    public int findTilt(TreeNode root) {
+        tilt = 0;
+        find(root);
+        return tilt;
+    }

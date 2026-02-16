@@ -1,0 +1,38 @@
+   static class pair{
+        Node node;
+        int hl;
+        pair(Node node ,int hl){
+            this.node =node;
+            this.hl = hl;
+        }
+    }
+    static ArrayList<ArrayList<Integer>> verticalOrder(Node root) {
+        // add your code here
+        ArrayList<ArrayList<Integer>> ans = new ArrayList<>();
+        HashMap<Integer , ArrayList<Integer>> map = new HashMap<>();
+        Queue<pair> q = new ArrayDeque<>();
+        int min = Integer.MAX_VALUE , max = Integer.MIN_VALUE;
+        q.add(new pair(root , 0));
+
+        while(q.size() > 0){
+            int size = q.size();
+
+            while(size-- > 0){
+                pair p = q.remove();
+                min = Math.min(min , p.hl);
+                max = Math.max(max , p.hl);
+
+                map.putIfAbsent(p.hl , new ArrayList<>());
+                map.get(p.hl).add(p.node.data);
+                if(p.node.left != null)q.add(new pair(p.node.left , p.hl-1));
+                if(p.node.right != null)q.add(new pair(p.node.right , p.hl+1));
+
+            }
+        }
+
+        for(int i = min;i <= max;i++){
+            ans.add(map.get(i));
+        }
+        return ans;
+
+    }

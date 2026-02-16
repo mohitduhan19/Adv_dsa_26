@@ -1,0 +1,23 @@
+ int xKaLeft;
+    int xKaRight;
+    public int count(TreeNode node , int x){
+        if(node == null)return 0;
+        int ls= count(node.left , x);
+        int rs= count(node.right ,x);
+
+        if(node.val == x){
+             xKaLeft = ls;
+             xKaRight = rs;
+        }
+        int ts= ls + rs+ 1;
+        return ts;
+    }
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        count(root , x);
+        int otherSide = n - (xKaLeft + xKaRight+ 1);
+
+        int maxOfThree = Math.max(otherSide , Math.max(xKaLeft ,xKaRight));
+        int rest = n - maxOfThree;
+        if(rest  < maxOfThree)return true;
+        else return false;
+    }

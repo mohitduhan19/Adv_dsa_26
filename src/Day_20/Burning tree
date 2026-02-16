@@ -1,0 +1,64 @@
+ public static Node ref(Node node , int start){
+        if(node == null)return null;
+        if(node.data == start)return node;
+
+        Node l = ref(node.left , start);
+        if(l != null){
+            if(l.data == start)return l;
+        }
+
+        Node r = ref(node.right , start);
+        return r;
+    }
+     public static void findparent(HashMap<Node , Node> hm , Node root){
+        if(root == null)return;
+        if(root.left != null){
+            hm.put(root.left , root);
+            //5 3
+        }
+        if(root.right != null){
+            hm.put(root.right , root);
+        }
+        findparent(hm , root.left);
+        findparent(hm , root.right);
+        return;
+    }
+    public static int minTime(Node root, int start) {
+        // code here
+
+        HashMap<Node , Node> parentMap = new HashMap<>();
+        findparent(parentMap , root);
+
+        int time = 0;
+        Queue<Node> q = new ArrayDeque<>();
+        Node target = ref(root , start);
+        q.add(target);
+
+        HashMap<Node , Boolean> vis =  new HashMap<>();
+        vis.put(target , true);
+
+        while(q.size() > 0){
+            int size = q.size();
+
+            for(int i = 0;i < size;i++){
+                Node node = q.remove();
+                if(node.left != null && !vis.containsKey(node.left)){
+                    q.add(node.left);
+                    vis.put(node.left, true);
+                }
+
+                if(node.right != null && !vis.containsKey(node.right)){
+                    q.add(node.right);
+                    vis.put(node.right , true);
+                }
+
+                if(parentMap.get(node) != null && !vis.containsKey(parentMap.get(node))){
+                    q.add(parentMap.get(node));
+                    vis.put(parentMap.get(node) , true);
+                }
+            }
+            if(q.size() > 0)time++;
+        }
+
+        return time;
+    }

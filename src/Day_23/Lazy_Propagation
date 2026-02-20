@@ -1,0 +1,107 @@
+class LazySegmentTree {
+
+    private int[] tree;
+    private int[] lazy;
+    private int n;
+
+    public LazySegmentTree(int[] arr) {
+        n = arr.length;
+        tree = new int[4 * n];
+        lazy = new int[4 * n];
+        build(arr, 0, 0, n - 1);
+    }
+
+    // Build tree
+    private void build(int[] arr, int node, int start, int end) {
+        if (start == end) {
+            tree[node] = arr[start];
+            return;
+        }
+
+        int mid = (start + end) / 2;
+        int left = 2 * node + 1;
+        int right = 2 * node + 2;
+
+        build(arr, left, start, mid);
+        build(arr, right, mid + 1, end);
+
+        tree[node] = tree[left] + tree[right];
+    }
+
+    // Range Update: add value to range [l, r]
+    public void updateRange(int l, int r, int value) {
+        updateRangeHelper(0, 0, n - 1, l, r, value);
+    }
+
+    private void updateRangeHelper(int node, int start, int end,
+                                   int l, int r, int value) {
+
+        // Apply pending lazy update
+        if (lazy[node] != 0) {
+            tree[node] += (end - start + 1) * lazy[node];
+
+            if (start != end) {
+                lazy[2 * node + 1] += lazy[node];
+                lazy[2 * node + 2] += lazy[node];
+            }
+
+            lazy[node] = 0;
+        }
+
+        // No overlap
+        if (start > r || end < l) return;
+
+        // Complete overlap
+        if (start >= l && end <= r) {
+            tree[node] += (end - start + 1) * value;
+
+            if (start != end) {
+                lazy[2 * node + 1] += value;
+                lazy[2 * node + 2] += value;
+            }
+            return;
+        }
+
+        // Partial overlap
+        int mid = (start + end) / 2;
+
+        updateRangeHelper(2 * node + 1, start, mid, l, r, value);
+        updateRangeHelper(2 * node + 2, mid + 1, end, l, r, value);
+
+        tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
+    }
+
+    // Range Query: sum from [l, r]
+    public int query(int l, int r) {
+        return queryHelper(0, 0, n - 1, l, r);
+    }
+
+    private int queryHelper(int node, int start, int end, int l, int r) {
+
+        // Apply pending lazy update
+        if (lazy[node] != 0) {
+            tree[node] += (end - start + 1) * lazy[node];
+
+            if (start != end) {
+                lazy[2 * node + 1] += lazy[node];
+                lazy[2 * node + 2] += lazy[node];
+            }
+
+            lazy[node] = 0;
+        }
+
+        // No overlap
+        if (start > r || end < l) return 0;
+
+        // Complete overlap
+        if (start >= l && end <= r) return tree[node];
+
+        // Partial overlap
+        int mid = (start + end) / 2;
+
+        int left = queryHelper(2 * node + 1, start, mid, l, r);
+        int right = queryHelper(2 * node + 2, mid + 1, end, l, r);
+
+        return left + right;
+    }
+}

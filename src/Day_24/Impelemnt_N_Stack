@@ -1,0 +1,48 @@
+  private int[] arr;
+
+    private int[]top;
+    private int[]next;
+    private int freeslot;
+    private int n , k;
+    public kStacks(int n, int k) {
+        this.n = n;
+        this.k = k;
+
+        arr = new int[n];// original
+        top= new int[k];// stack
+        next = new int[n];// orignal
+
+        for(int i =0;i < k;i++){
+            top[i] = -1;
+        }
+        for(int i = 0;i < n-1;i++){
+            next[i] = i + 1;
+        }
+        next[n-1]= -1;
+        freeslot = 0;
+    }
+
+    public void push(int x, int i) {
+        if(freeslot == -1)return;
+
+        int idx = freeslot;
+        freeslot = next[idx];
+
+        arr[idx]= x;
+
+        next[idx] = top[i];
+        top[i] = idx;
+    }
+
+    public int pop(int i) {
+        // pop element from stack i
+        if(top[i] == -1)return -1;
+
+        int idx = top[i];// 3
+        top[i] = next[idx];//3 - > 2
+
+        next[idx] = freeslot;
+        freeslot  = idx;
+        return arr[idx];
+
+    }

@@ -1,0 +1,11 @@
+  public TreeNode help(int[] pre , int bound , int[] i){
+        if(i[0] == pre.length || pre[i[0]] > bound)return null;
+
+        TreeNode node = new TreeNode(pre[i[0]++]);
+        node.left = help(pre , node.val , i);
+        node.right = help(pre , bound , i);
+        return node;
+    }
+    public TreeNode bstFromPreorder(int[] preorder) {
+        return help(preorder , Integer.MAX_VALUE , new int[]{0});
+    }

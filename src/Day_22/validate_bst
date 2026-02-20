@@ -1,0 +1,13 @@
+  public boolean help(TreeNode root , long minval , long maxval){
+        if(root == null)return true;
+
+        if(root.val <= minval || root.val >= maxval)return false;
+        return help(root.left , minval , root.val) &&
+        help(root.right , root.val , maxval);
+
+
+
+    }
+    public boolean isValidBST(TreeNode root) {
+        return help(root , Long.MIN_VALUE , Long.MAX_VALUE);
+    }

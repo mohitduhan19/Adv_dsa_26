@@ -1,0 +1,69 @@
+class SegmentTree {
+
+    private int[] tree;
+    private int n;
+
+    public SegmentTree(int[] nums) {
+        n = nums.length;
+        tree = new int[4 * n];  // safe size
+        build(nums, 0, 0, n - 1);
+    }
+
+    // Build the tree
+    private void build(int[] nums, int node, int start, int end) {
+        if (start == end) {
+            tree[node] = nums[start];
+        } else {
+            int mid = start + (end - start) / 2;
+            int left = 2 * node + 1;
+            int right = 2 * node + 2;
+
+            build(nums, left, start, mid);
+            build(nums, right, mid + 1, end);
+
+            tree[node] = tree[left] + tree[right];
+        }
+    }
+
+    // Range Sum Query
+    public int query(int l, int r) {
+        return queryHelper(0, 0, n - 1, l, r);
+    }
+
+    private int queryHelper(int node, int start, int end, int l, int r) {
+        if (r < start || l > end) {
+            return 0; // no overlap
+        }
+
+        if (l <= start && end <= r) {
+            return tree[node]; // complete overlap
+        }
+
+        int mid = start + (end - start) / 2;
+        int leftSum = queryHelper(2 * node + 1, start, mid, l, r);
+        int rightSum = queryHelper(2 * node + 2, mid + 1, end, l, r);
+
+        return leftSum + rightSum;
+    }
+
+    // Point Update
+    public void update(int index, int value) {
+        updateHelper(0, 0, n - 1, index, value);
+    }
+
+    private void updateHelper(int node, int start, int end, int index, int value) {
+        if (start == end) {
+            tree[node] = value;
+        } else {
+            int mid = start + (end - start) / 2;
+
+            if (index <= mid) {
+                updateHelper(2 * node + 1, start, mid, index, value);
+            } else {
+                updateHelper(2 * node + 2, mid + 1, end, index, value);
+            }
+
+            tree[node] = tree[2 * node + 1] + tree[2 * node + 2];
+        }
+    }
+}
